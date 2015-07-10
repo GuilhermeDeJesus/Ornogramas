@@ -6,9 +6,13 @@ class UnidadesOrganizacionais extends CI_Controller {
 
     public function index()
     {
+
+        // var_dump($this->pdf->load());die;
+
         $data['unidades'] = $this->Unidades_Organizacionais_model->get_unidades();
 
-        $this->load->view('unidades_organizacionais', $data);
+        // $this->load->view('unidades_organizacionais', $data);
+        $this->load->view('unidades_download', $data);
     }
 
     public function create_unidades()

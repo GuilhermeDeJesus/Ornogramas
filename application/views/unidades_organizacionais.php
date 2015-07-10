@@ -172,12 +172,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				Preencha um dos campos para fazer a pesquisa
 			</p>
 	        <div class="pull-right btn-group">
-				<a href="UnidadesOrganizacionais/create_unidades" class="btn btn-small btn-primary" title="Nova Unidade"> Nova Unidade</a>
-			</div>
+				    <a href="UnidadesOrganizacionais/create_unidades" class="btn btn-small btn-primary" title="Nova Unidade"> Nova Unidade</a>
+			    </div>
 	    </div>
 	<hr />
 
-   	<h3>UNIDADES ORGANIZACIONAIS</h3>
+   	<h3>UNIDADES ORGANIZACIONAIS - <button type="button" class="btn btn-warning">Fazer Download</button></h3>
+
+    <div class="pull-right btn-group">
+      
+    </div>
 
    	        <div class="table-responsive">
                 <table class="table">

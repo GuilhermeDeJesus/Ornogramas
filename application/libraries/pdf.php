@@ -3,7 +3,7 @@
 
 class pdf {
 
-	public function pdf
+	public function pdf()
 	{
 		$CI = & get_instance();
 		log_message('Debug', 'mPDF class is loaded.');
