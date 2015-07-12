@@ -6,9 +6,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta charset="utf-8">
     <title>Unidades Organizacionais</title>
     <script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 </head>
 	<body>
@@ -56,7 +56,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
    <div class="col-md-12 col-sm-12">
       <div class="panel panel-info">
         <div class="panel-heading">
-          <?php foreach ($unidade as $u) { ?>
+          <?php 
+          $id_pai = array();
+          foreach ($unidade as $u) { array_push($id_pai, $u->id); ?>
             <h5><b>Nome</b>: <?=$u->name;?>    <b>CNPJ</b>: <?=$u->cnpj;?> </h5>
             <?php } ?>
         </div>
@@ -102,18 +104,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   <form action="../insert_nova_estrutura" method="post" >
                     <div class="form-group">
                       <label for="exampleInputEmail1">Nome</label>
-                          <select class="form-control" name="id_filho">
+                          <select class="form-control chosen-select" name="id_filho">
                             <?php foreach ($all_unidades as $value) { 
                                 if(!in_array($value->id, $uniths)) {
-                              ?>
+                                  if(!in_array($value->id, $id_pai)){ ?>
                                   <option value="<?=$value->id;?>"><?=$value->name;?></option>
-
-                            <?php }} ?>
+                            <?php }}} ?>
                           </select>
                            <?php foreach ($unidade as $u) { ?>
                            <input type="hidden" name="id_pai" value="<?=$u->id;?>"/>
                            <?php } ?>
-                          
                     </div>
                     <button type="submit" class="btn btn-default">CADASTRAR</button>
                   </form>

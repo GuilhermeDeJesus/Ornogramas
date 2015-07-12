@@ -12,12 +12,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
-
     <script type="text/javascript">
 
         function deletar(id){
               $.ajax({
-                  'url' : 'UnidadesOrganizacionais/delete/' + id,
+                  'url' : 'index.php/UnidadesOrganizacionais/delete/' + id,
                   'type' : 'POST', //the way you want to send data to your URL
                   'error': function(){
                       alert('Não foi possível excluir esta unidade');
@@ -29,7 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                               window.id = id;
                          }else if(data == 0){
                           $.ajax({
-                              'url' : 'UnidadesOrganizacionais/delete_unidade/' + id,
+                              'url' : 'index.php/UnidadesOrganizacionais/delete_unidade/' + id,
                               'type' : 'POST', //the way you want to send data to your URL
                               'success' : function(data){ //probably this request will return anything, it'll be put in var "data"
                                   $("#sucesso").modal('show');
@@ -40,6 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                               },
                               'error': function(){
                                   alert('Não foi possível excluir esta unidade');
+                                  alert(id);
                               }
                           });
                       }
@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         function confirmar_exclusao(){
             $.ajax({
-                'url' : 'UnidadesOrganizacionais/delete_filhos/' + window.id,
+                'url' : 'index.php/UnidadesOrganizacionais/delete_filhos/' + window.id,
                 'type' : 'POST', //the way you want to send data to your URL
                 'success' : function(data){ //probably this request will return anything, it'll be put in var "data"
                     $("#confirmacao").modal('hide');
@@ -62,11 +62,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             });
         }
 
-
+        // acho que não presto -- naamm :[-]
+        function download(){
+            $("#download").modal('show');
+        }        
 
     </script>
-
-
 
 </head>
 	<body>
@@ -99,6 +100,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" id="ok">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="download" class="modal fade" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Realizando download, por favor, aguarde!</p>
                 </div>
             </div>
         </div>
@@ -149,17 +159,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <div class="row">
   <div class="col-md-10 col-sm-10">
 
-	<form action="get_unidade" class="form-inline" style="margin-left:35%;" method="post" >
-		  <div class="form-group">
-		    <label class="sr-only" for="exampleInputEmail3" >Nome da Unidade</label>
-		    <input type="text" class="form-control" id="search_nome" placeholder="Nome da Unidade" name="name" >
-		  </div>
-		  <div class="form-group">
-		    <label class="sr-only" for="exampleInputPassword3">CNPJ</label>
-		    <input type="text" class="form-control" id="search_cnpj" placeholder="CNPJ" name="cnpj" >
-		  </div>
-		  <button class="btn btn-default btn-primary" type="submit" id="btn_buscar"><i class="glyphicon glyphicon-search" ></i></button>
-	</form><br>
+  	<form action="index.php/UnidadesOrganizacionais/get_unidade" class="form-inline" style="margin-left:35%;" method="post" >
+  		  <div class="form-group">
+  		    <label class="sr-only" for="exampleInputEmail3" >Nome da Unidade</label>
+  		    <input type="text" class="form-control" id="search_nome" placeholder="Nome da Unidade" name="name" >
+  		  </div>
+  		  <div class="form-group">
+  		    <label class="sr-only" for="exampleInputPassword3">CNPJ</label>
+  		    <input type="text" class="form-control" id="search_cnpj" placeholder="CNPJ" name="cnpj" >
+  		  </div>
+  		  <button class="btn btn-default btn-primary" type="submit" id="btn_buscar"><i class="glyphicon glyphicon-search" ></i></button>
+  	</form><br>
 
    </div>
 
@@ -167,17 +177,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
    	<hr />
 	   <div class="acoes-formulario-top clearfix">
-			<p class="requiredLegend pull-left">
-				<br>
-				Preencha um dos campos para fazer a pesquisa
-			</p>
+    			<p class="requiredLegend pull-left">
+    				<br>
+    				Preencha um dos campos para fazer a pesquisa
+    			</p>
 	        <div class="pull-right btn-group">
-				    <a href="UnidadesOrganizacionais/create_unidades" class="btn btn-small btn-primary" title="Nova Unidade"> Nova Unidade</a>
+				    <a href="index.php/UnidadesOrganizacionais/create_unidades" class="btn btn-small btn-primary" title="Nova Unidade"> Nova Unidade</a>
 			    </div>
 	    </div>
 	<hr />
 
-   	<h3>UNIDADES ORGANIZACIONAIS - <button type="button" class="btn btn-warning">Fazer Download</button></h3>
+   	
+    <form action="index.php/UnidadesOrganizacionais/download_unidades" >
+      <h3>UNIDADES ORGANIZACIONAIS - <button type="submit" id="download" class="btn btn-warning"><i class="glyphicon glyphicon-download-alt"></i></button></h3>
+    </form>
 
     <div class="pull-right btn-group">
       
@@ -195,16 +208,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <tbody>
                     	<?php foreach ($unidades as $u) { ?>
                             <tr>
-                            	
-                                <td><a href="UnidadesOrganizacionais/unidades_subordinadas/<?=$u->id; ?>"><?=$u->name; ?></a></td>
+                                <td><a href="index.php/UnidadesOrganizacionais/unidades_subordinadas/<?=$u->id; ?>"><?=$u->name; ?></a></td>
                                 <td><?=$u->cnpj; ?></td>
-
                                 <td>
-                                    <button class="btn btn-success" type="button" id="editar" onclick="editar(<?=$u->id;?>);"><i class="glyphicon glyphicon-pencil"></i></button>
+                                  
+                                  <a href="index.php/UnidadesOrganizacionais/editar/<?=$u->id;?>" class="btn btn-success" title="Nova Unidade"><i class="glyphicon glyphicon-pencil"></i></a>
                                   <button class="btn btn-danger" type="button" id="deletar" onclick="deletar(<?=$u->id;?>);" ><i class="glyphicon glyphicon-trash"></i></button>
 
                                 </td>
-                                
                             </tr>
 					           <?php } ?>
                     </tbody>

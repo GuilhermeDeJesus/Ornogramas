@@ -9,6 +9,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function(){
+
+      $('.InputCNPJ').inputmask({
+        mask: '99.999.999/9999-99'
+      });      
+
+    });
+
+    </script>
 
 </head>
 <body>
@@ -85,20 +98,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
                 <div class="panel-body">
 
-                    <form action="create" method="post">
+                    <?php foreach ($unidade as $u) { ?>
+                    <form action="../edit_action/<?=$u->id;?>" method="post">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nome</label>
-                            <input type="text" class="form-control" id="exampleInputNome" placeholder="Nome" name="name" disabled="disabled">
+                            <input type="text" class="form-control" value="<?=$u->name; ?>" id="exampleInputNome" placeholder="Nome" name="name" disabled="disabled">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputCNPJ">CNPJ</label>
-                            <input type="text" class="form-control" id="exampleInputCNPJ" placeholder="CNPJ" name="cnpj" disabled="disabled">
+                            <input type="text" class="form-control" value="<?=$u->cnpj; ?>" data-mask="00.000.000/0000-00" id="InputCNPJ" id="exampleInputCNPJ" placeholder="CNPJ" name="cnpj" disabled="disabled">
                         </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5><b>TORNAR ESTÁ UNIDADE SUBORDINADA À:</b></h5>
+                                  <select class="form-control chosen-select" name="id_ancestror">
+                                    <?php foreach ($all_unidades as $value) { ?>
+
+                                          <option value="<?=$value->id;?>"><?=$value->name;?></option>
+
+                                    <?php } ?>
+                                  </select>
+                            </div>
+                        </div>
+                        <?php } ?>
                         <button type="submit" class="btn btn-default">EDITAR</button>
                     </form>
 
                 </div>
             </div>
+
         </div>
 
     </div><!--/row-->

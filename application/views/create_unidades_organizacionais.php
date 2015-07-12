@@ -9,6 +9,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function(){
+
+      $('.InputCNPJ').inputmask({
+        mask: '99.999.999/9999-99'
+      });      
+
+    });
+
+    </script>
+     
 
 </head>
 	<body>
@@ -92,7 +107,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
                 <div class="form-group">
                   <label for="exampleInputCNPJ">CNPJ</label>
-                  <input type="text" class="form-control" id="exampleInputCNPJ" placeholder="CNPJ" name="cnpj">
+                  <input type="text" class="form-control InputCNPJ" id="InputCNPJ" placeholder="CNPJ" name="cnpj">
                 </div>
                 <button type="submit" class="btn btn-default">CADASTRAR</button>
               </form>

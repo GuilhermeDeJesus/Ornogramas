@@ -19,12 +19,10 @@ class Unidades_Organizacionais_model extends CI_Model {
     public function create_unidade($data){
 
         $this->db->insert('unidades_organizacionais', $data);
-        // Code here after successful insert
-        return true;   // to the controller
+        return true;   
         if($this->db->affected_rows() > 0)
         {
-            // Code here after successful insert
-            return true; // to the controller
+            return true; 
         }
     }
 
@@ -38,16 +36,23 @@ class Unidades_Organizacionais_model extends CI_Model {
 
         $this->db->select('u.id, u.name, u.cnpj');
         $this->db->from('unidades_organizacionais u');
-        $this->db->join('unidades_organizacionais_tree_paths t', 'u.id = t.filho');
-        $this->db->where('t.pai', $this->db->escape($id_pai));
+        $this->db->join('unidades_organizacionais_tree_paths t', 'u.id = t.descendant');
+        $this->db->where('t.ancestor', $id_pai);
+        $this->db->where('u.id != ', $id_pai);
         $query = $this->db->get();
         return $query->result();
     }
 
-    public function get_unidade($id = null, $nome = null, $cnpj = null){
+    public function get_unidade($id = null, $nome = null, $cnpj = null, $diferente = null){
 
         if(isset($id) and $id != null){
-            $this->db->where('id', $id);
+            // D - diferente
+            if($diferente == 'D'){
+               $this->db->where('id !=', $id);     
+            }else if($diferente == null){   
+                $this->db->where('id', $id);
+            }
+           
         }else if(isset($nome) and $cnpj == null)
         {
             $this->db->where('name', $nome);
@@ -65,7 +70,7 @@ class Unidades_Organizacionais_model extends CI_Model {
     public function get_filhos($id_pai){
 
         $sql = null;
-        $this->db->where('pai', $id_pai);
+        $this->db->where('ancestor', $id_pai);
         $pais = $this->db->get("unidades_organizacionais_tree_paths");
 
         if(count($pais->result()) > 0){
@@ -75,42 +80,64 @@ class Unidades_Organizacionais_model extends CI_Model {
 
     public function delete_filhos_and_pai($id, $filhos){
 
-        $this->db->where_in('filho', $filhos);
+        $this->db->where_in('descendant', $filhos);
         $this->db->delete('unidades_organizacionais_tree_paths');
 
-        $this->db->where('filho', $id);
+        $this->db->where('descendant', $id);
         $this->db->delete('unidades_organizacionais_tree_paths');
-
 
         $this->delete_unidade($id);
-
     }
 
     public function delete_unidade($id){
+
+        $this->db->where('descendant', $id);
+        $this->db->delete('unidades_organizacionais_tree_paths');
+
         $this->db->where("id", $id);
         $this->db->delete('unidades_organizacionais');
         if($this->db->affected_rows() > 0)
         {
             return false;
+
         }else{
+
             return false;
         }
     }
 
     public function insert_nova_estrutura($id_pai, $id_filho){
 
-        $query = $this->db->query("INSERT INTO unidades_organizacionais_tree_paths (pai, filho)
-                                    SELECT t.pai, $id_filho
+        $query = $this->db->query("INSERT INTO unidades_organizacionais_tree_paths (ancestor, descendant)
+                                    SELECT t.ancestor, $id_filho
                                     FROM unidades_organizacionais_tree_paths AS t
-                                    WHERE t.filho = 11
+                                    WHERE t.descendant = 11
                                     UNION ALL
                                     SELECT $id_pai, $id_filho");
 
         return $query;
     }
 
+    public function edit_estrutura($id_pai, $id_acestror){       
+
+        $sql = "INSERT INTO unidades_organizacionais_tree_paths (ancestor, descendant) VALUES ($id_acestror, $id_pai)";
+
+        $query = $this->db->query($sql);
+
+        return $query;
+    }
+
+    public function get_pai($ancestror){
+
+        $sql = null;
+        $this->db->where('descendant', $ancestror);
+        $this->db->where('ancestor != descendant');
+        $pais = $this->db->get("unidades_organizacionais_tree_paths");
+
+        return $pais->result();
+
+    }
+
     
-
-
 
 }
