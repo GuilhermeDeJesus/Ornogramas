@@ -12,7 +12,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
-    <!-- Latest compiled and minified JavaScript -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>    
     <script type="text/javascript">
 
@@ -23,11 +22,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         function deletar(id){
               $.ajax({
                   'url' : 'index.php/UnidadesOrganizacionais/delete/' + id,
-                  'type' : 'POST', //the way you want to send data to your URL
+                  'type' : 'POST', 
                   'error': function(){
                       alert('Não foi possível excluir esta unidade');
                   },
-                  'success' : function(data){ //probably this request will return anything, it'll be put in var "data"
+                  'success' : function(data){ 
 
                       if(data > 0){
                              $("#confirmacao").modal('show');
@@ -35,8 +34,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                          }else if(data == 0){
                           $.ajax({
                               'url' : 'index.php/UnidadesOrganizacionais/delete_unidade/' + id,
-                              'type' : 'POST', //the way you want to send data to your URL
-                              'success' : function(data){ //probably this request will return anything, it'll be put in var "data"
+                              'type' : 'POST', 
+                              'success' : function(data){ 
                                   $("#sucesso").modal('show');
                                   $("#ok").click(function(){
                                       window.location.reload(true);
@@ -56,9 +55,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         function confirmar_exclusao(){
             $.ajax({
                 'url' : 'index.php/UnidadesOrganizacionais/delete_filhos/' + window.id,
-                'type' : 'POST', //the way you want to send data to your URL
-                'success' : function(data){ //probably this request will return anything, it'll be put in var "data"
+                'type' : 'POST', 
+                'success' : function(data){ 
                     $("#confirmacao").modal('hide');
+                    window.location.reload(true);
                 },
                 'error': function(){
                     alert("Erro ao excluir unidades filhas");
