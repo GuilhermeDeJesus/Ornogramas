@@ -115,7 +115,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                            <input type="hidden" name="id_pai" value="<?=$u->id;?>"/>
                            <?php } ?>
                     </div>
-                    <button type="submit" class="btn btn-default">CADASTRAR</button>
+                    <button type="submit" class=" btn btn-default">CADASTRAR</button>
                   </form>
         </div>
       </div>
