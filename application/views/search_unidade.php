@@ -171,7 +171,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     	<?php foreach ($unidades as $u) { ?>
                             <tr>
                                 <td><?=$u->name; ?></td>
-                                <td><?=$u->cnpj; ?></td>
+                                <td><?php
+                                    $val = $u->cnpj;
+                                    $mask = '##.###.###/####-##';
+                                    $maskared = '';
+                                    $k = 0;
+                                    for ($i = 0; $i <= strlen($mask) - 1; $i++) {
+                                      if ($mask[$i] == '#') {
+                                        if (isset ($val[$k]))
+                                          $maskared .= $val[$k++];
+                                      } else {
+                                        if (isset ($mask[$i]))
+                                          $maskared .= $mask[$i];
+                                      }
+                                    }
+                                    ?>
+                                    <?=$maskared; ?>
+                                </td>
                                 <td>        
                                   <a href="editar/<?=$u->id;?>" class="btn btn-success" title="Nova Unidade"><i class="glyphicon glyphicon-pencil"></i></a>
                                   <button class="btn btn-danger" type="button" id="deletar" onclick="deletar(<?=$u->id;?>);" ><i class="glyphicon glyphicon-trash"></i></button>

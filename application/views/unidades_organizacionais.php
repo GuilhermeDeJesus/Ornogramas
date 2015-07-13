@@ -11,8 +11,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>    
     <script type="text/javascript">
+
+        $('#search_cnpj').inputmask({
+          mask: '99.999.999/9999-99'
+        });     
 
         function deletar(id){
               $.ajax({
@@ -166,7 +172,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   		  </div>
   		  <div class="form-group">
   		    <label class="sr-only" for="exampleInputPassword3">CNPJ</label>
-  		    <input type="text" class="form-control" id="search_cnpj" placeholder="CNPJ" name="cnpj" >
+  		    <input type="text" class="form-control" data-mask="99.999.999/9999-99" id="search_cnpj" placeholder="CNPJ" name="cnpj" >
   		  </div>
   		  <button class="btn btn-default btn-primary" type="submit" id="btn_buscar"><i class="glyphicon glyphicon-search" ></i></button>
   	</form><br>
@@ -209,7 +215,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     	<?php foreach ($unidades as $u) { ?>
                             <tr>
                                 <td><a href="index.php/UnidadesOrganizacionais/unidades_subordinadas/<?=$u->id; ?>"><?=$u->name; ?></a></td>
-                                <td><?=$u->cnpj; ?></td>
+                                <td><?php
+                                    $val =  $u->cnpj;
+                                    $mask = '##.###.###/####-##';
+                                    $maskared = '';
+                                    $k = 0;
+                                    for ($i = 0; $i <= strlen($mask) - 1; $i++) {
+                                      if ($mask[$i] == '#') {
+                                        if (isset ($val[$k]))
+                                          $maskared .= $val[$k++];
+                                      } else {
+                                        if (isset ($mask[$i]))
+                                          $maskared .= $mask[$i];
+                                      }
+                                    }
+                                    ?>
+                                    <?=$maskared; ?>
+                                </td>
                                 <td>
                                   
                                   <a href="index.php/UnidadesOrganizacionais/editar/<?=$u->id;?>" class="btn btn-success" title="Nova Unidade"><i class="glyphicon glyphicon-pencil"></i></a>

@@ -22,8 +22,9 @@ class UnidadesOrganizacionais extends CI_Controller {
     public function create()
     {
         $data = array();
-
-        $cnpj = filter_var($this->input->post('cnpj'), FILTER_SANITIZE_NUMBER_INT);
+        $caracteres = array(".","-");
+        $cnpj = str_replace($caracteres, "", $this->input->post('cnpj'));
+        $cnpj = filter_var($cnpj, FILTER_SANITIZE_NUMBER_INT);
 
         if(!empty($this->input->post('name') && !empty($cnpj))){
             $data = array(
@@ -51,8 +52,10 @@ class UnidadesOrganizacionais extends CI_Controller {
     public function get_unidade(){
 
         $nome = htmlspecialchars($this->input->post('name'));
-        $cnpj = htmlspecialchars($this->input->post('cnpj'));
-        $data['unidades'] = $this->Unidades_Organizacionais_model->get_unidade(null, (string) $nome, (int) $cnpj);
+        $caracteres = array(".","-");
+        $cnpj = str_replace($caracteres, "", $this->input->post('cnpj'));
+        $cnpj = filter_var($cnpj, FILTER_SANITIZE_NUMBER_INT);
+        $data['unidades'] = $this->Unidades_Organizacionais_model->get_unidade(null, (string) $nome, $cnpj);
         $this->load->view('search_unidade', $data);
 
     }
@@ -98,10 +101,14 @@ class UnidadesOrganizacionais extends CI_Controller {
         $id_pai   = htmlspecialchars($this->input->post('id_pai'));
         $id_filho = htmlspecialchars($this->input->post('id_filho'));
 
-        $result = $this->Unidades_Organizacionais_model->insert_nova_estrutura((int) $id_pai,
-            (int) $id_filho);
+        if((int) $id_filho == 0){
+            redirect('../../../../', 'refresh');
+        }else{
+            $result = $this->Unidades_Organizacionais_model->insert_nova_estrutura((int) $id_pai,
+                (int) $id_filho);
 
-        redirect('../../../../', 'refresh');
+            redirect('../../../../', 'refresh');            
+        }
 
     }
 
@@ -140,10 +147,15 @@ class UnidadesOrganizacionais extends CI_Controller {
     public function edit_action($id){
 
             $id_pai = (int) $id;
-            $id_ancestror = $this->input->post('id_ancestror');
-            $result = $this->Unidades_Organizacionais_model->edit_estrutura($id_pai, (int) $id_ancestror);
+            if($this->input->post('id_ancestror') == 0){
+                redirect("../../unidades_subordinadas/$id_pai", 'refresh');    
+            }else{
 
-            $this->unidades_subordinadas($id_ancestror);
+                $id_ancestror = $this->input->post('id_ancestror');
+                $result = $this->Unidades_Organizacionais_model->edit_estrutura($id_pai, (int) $id_ancestror);
+
+                $this->unidades_subordinadas($id_ancestror);               
+            }
 
     }
 
