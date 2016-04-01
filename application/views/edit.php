@@ -1,137 +1,41 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
+defined('BASEPATH') or exit('No direct script access allowed');
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Unidades Organizacionais</title>
-    <script src="http://code.jquery.com/jquery-2.1.1.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <!-- Latest compiled and minified JavaScript -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
-    <script type="text/javascript">
+<meta charset="utf-8">
+<title>Welcome to CodeIgniter</title>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css" />
 
-    $(document).ready(function(){
+	<style type="text/css">
 
-      $('.InputCNPJ').inputmask({
-        mask: '99.999.999/9999-99'
-      });      
-
-    });
-
-    </script>
+	::selection { background-color: #E13300; color: white; }
+	::-moz-selection { background-color: #E13300; color: white; }
+	
+	</style>
 
 </head>
 <body>
-<nav class="navbar navbar-fixed-top header">
-    <div class="col-md-12">
-        <div class="navbar-header">
 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse1">
-                <i class="glyphicon glyphicon-search"></i>
-            </button>
+	<div id="container">
+		<h1>Fabricante!</h1>
 
-        </div>
-        <div class="collapse navbar-collapse" id="navbar-collapse1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://www.bootply.com" target="_ext">Bootply+</a></li>
-                <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-bell"></i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><span class="badge pull-right">40</span>Link</a></li>
-                        <li><a href="#"><span class="badge pull-right">2</span>Link</a></li>
-                        <li><a href="#"><span class="badge pull-right">0</span>Link</a></li>
-                        <li><a href="#"><span class="label label-info pull-right">1</span>Link</a></li>
-                        <li><a href="#"><span class="badge pull-right">13</span>Link</a></li>
-                    </ul>
-                </li>
-                <li><a href="#" id="btnToggle"><i class="glyphicon glyphicon-th-large"></i></a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-user"></i></a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div class="navbar navbar-default" id="subnav">
-    <div class="col-md-12">
-        <div class="navbar-header">
+		<div id="body">
+			<pre>
 
-            <ul class="nav dropdown-menu">
-                <li><a href="#"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-dashboard" style="color:#0000aa;"></i> Dashboard</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-inbox" style="color:#11dd11;"></i> Pages</a></li>
-                <li class="nav-divider"></li>
-                <li><a href="#"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-plus"></i> More..</a></li>
-            </ul>
-
-
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse2">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-
-        </div>
-    </div>
-</div>
-
-<!--main-->
-<div class="container" id="main">
-    <div class="row">
-
-        <div class="col-md-12 col-sm-12">
-
-            <?php
-            if(isset($sucesso) && $sucesso == true){
-                ?>
-
-                <div class="alert alert-success" role="alert">Unidade cadastrada com sucesso</div>
-
-            <?php } ?>
-
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3>EDITAR UNIDADE ORGANIZACIONAL</h3>
-                </div>
-                <div class="panel-body">
-
-                    <?php foreach ($unidade as $u) { ?>
-                    <form action="../edit_action/<?=$u->id;?>" method="post">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Nome</label>
-                            <input type="text" class="form-control" value="<?=$u->name; ?>" id="exampleInputNome" placeholder="Nome" name="name" disabled="disabled">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputCNPJ">CNPJ</label>
-                            <input type="text" class="form-control" value="<?=$u->cnpj; ?>" data-mask="00.000.000/0000-00" id="InputCNPJ" id="exampleInputCNPJ" placeholder="CNPJ" name="cnpj" disabled="disabled">
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h5><b>TORNAR ESTÁ UNIDADE SUBORDINADA À:</b></h5>
-                                  <select class="form-control chosen-select" name="id_ancestror">
-                                    <?php foreach ($all_unidades as $value) { ?>
-
-                                          <option value="<?=$value->id;?>"><?=$value->name;?></option>
-
-                                    <?php } ?>
-                                  </select>
-                            </div>
-                        </div>
-                        <?php } ?>
-                        <button type="submit" class="btn btn-default">EDITAR</button>
-                    </form>
-
-                </div>
-            </div>
-
-        </div>
-
-    </div><!--/row-->
-
-</div><!--/main-->
+        	<?php for($i=0; $i < count($fabricante); ++$i){ ?>
+        	
+        		<?php echo form_open("Fabricante/update/".$fabricante[$i]->codigo); ?>
+        		<?php echo form_label("Descricao"); ?>
+        		<?php echo form_textarea(array("id" => "descricao", "name" => "descricao", "value" => $fabricante[$i]->descricao)); ?>
+        		<?php echo form_submit(array("id" => "submit", "value" => "Editar")); ?>
+        		<?php echo form_close(); ?>
+        	
+        	<?php } ?>
+	
+		</div>
+	</div>
 
 </body>
 </html>
